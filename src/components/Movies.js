@@ -18,12 +18,14 @@ function Movies() {
     const firstLoadSearchRef = useRef(true);
     const options = constants.API_OPTIONS;
 
+    // debounced search
     const debouncedSearch = useCallback(debounce((q) => {
         searchQueryRef.current = `?query=${searchRef.current}&page=${pageRef.current}`; // reset query param
         getMoviesList(searchQueryRef.current, true, true);
     }, 1000), []);
 
 
+    // getting genre list and saving to local storage
     const getGenre = async () => {
         const storedGenre = getItem('genre');
         setGenre(storedGenre);
@@ -38,6 +40,7 @@ function Movies() {
         }
     }
 
+    // handles search input for movies
     useEffect(() => {
         searchRef.current = searchText;
         if (firstLoadSearchRef.current) {
@@ -53,11 +56,13 @@ function Movies() {
         }
     }, [searchText, debouncedSearch])
 
+    // get movies after genre is received from api
     useEffect(() => {
         if (!genre) return
         getMoviesList();
-    }, [genre])
+    }, [genre]);
 
+    // handles api call for movies with query params
     const getMoviesList = async (query = '', isSearch = false, reset = false) => {
         try {
             let url = isSearch ? constants.SEARCH_END_POINT : constants.MOVIE_END_POINT;
@@ -78,6 +83,7 @@ function Movies() {
         getGenre();
     }, []);
 
+    // handles scroll for infinte scrolling
     useEffect(() => {
         const handleScroll = () => {
             let parentEl = document.getElementById("movie-container");

@@ -13,7 +13,7 @@ export default function Header() {
                     <span className="text-sm sm:text-base">Advanced search</span>
                 </div>
                 <div className="flex items-center gap-1 cursor-pointer" onClick={() => navigate('/watchlist')}>
-                    <img src="/assets/common/watchlist.png" loading="lazy" alt="watchlsi icon" className="w-[14px] sm:w-[18px]" />
+                    <img src="/assets/common/watchlist.png" loading="lazy" alt="watchlist icon" className="w-[14px] sm:w-[18px]" />
                     <span className="text-sm sm:text-base">WatchList</span>
                 </div>
             </div>

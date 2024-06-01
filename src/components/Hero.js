@@ -13,13 +13,12 @@ function Hero() {
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                     />
-                    <img src="/assets/common/close.png" loading="lazy" alt="" width={10} className='cursor-pointer'
+                    <img src="/assets/common/close.png" loading="lazy" alt="close icon" width={10} className='cursor-pointer'
                         onClick={() => setSearchText('')}
                     />
                 </label>
                 <h1 className="text-2xl sm:text-5xl px-2 uppercase font-bold text-primary my-8">Explore the World of Movies</h1>
             </div>
-            {/* <Movies /> */}
         </>
     )
 }

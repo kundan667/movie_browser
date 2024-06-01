@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import Header from '../components/Header'
 import useLocalStorage from '../hooks/useLocalStorage';
 import { generateObjects, isEmpty } from '../utils/commonUtils';
@@ -15,16 +15,17 @@ function AdvancedSearch() {
     const { getItem } = useLocalStorage();
     const genre = getItem('genre');
     const [starArr2, setStarArr2] = useState(starArr);
-    const [yearArr1, setYearArr1] = useState(yearArr);
+    const [yearArr2, setYearArr2] = useState(yearArr);
     const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
-    const star1Ref = useRef();
-    const star2Ref = useRef();
-    const year1Ref = useRef();
-    const year2Ref = useRef();
+    const star1Ref = useRef('');
+    const star2Ref = useRef('');
+    const year1Ref = useRef('');
+    const year2Ref = useRef('');
     const genreRef = useRef([]);
     const pageRef = useRef(1);
     const isReset = useRef(false);
+    const [showFilter, setShowFilter] = useState(false);
 
     const handleQuery = () => {
         let rating1 = isEmpty(star1Ref.current) ? '' : `&vote_average.gte=${star1Ref.current}`;
@@ -38,11 +39,13 @@ function AdvancedSearch() {
         let finalQ = `${ratingQ}${genreQ}${yearQ}${pageQ}`;
         setQuery(!isEmpty(finalQ) ? `?${finalQ.substring(1)}` : '');
     }
+
     const handleStar1 = (e) => {
         star1Ref.current = e.target.value;
         let arr = starArr.filter((item) => parseInt(item.id) >= parseInt(star1Ref.current));
         setStarArr2([...arr]);
         isReset.current = true;
+        star2Ref.current = '';
         handleQuery();
     }
 
@@ -55,8 +58,9 @@ function AdvancedSearch() {
     const handleYear1 = (e) => {
         year1Ref.current = e.target.value;
         let arr = yearArr.filter((item) => parseInt(item.id) >= parseInt(year1Ref.current));
-        setYearArr1([...arr]);
+        setYearArr2([...arr]);
         isReset.current = true;
+        year2Ref.current = '';
         handleQuery()
     }
 
@@ -66,7 +70,8 @@ function AdvancedSearch() {
         handleQuery();
     }
 
-    const handleGenre = (e) => {
+    const handleGenre = useCallback((e) => {
+        e.stopPropagation();
         if (e.target.checked) {
             //add
             genreRef.current.push(e.target.value);
@@ -79,7 +84,7 @@ function AdvancedSearch() {
         }
         isReset.current = true;
         handleQuery()
-    }
+    }, [])
 
     useEffect(() => {
         if (isEmpty(query)) return
@@ -92,17 +97,11 @@ function AdvancedSearch() {
             // setIsLoading(true);
             const res = await fetch(`${constants.MOVIE_END_POINT}${query}`, options);
             const response = await res.json();
-            // console.log("response:", response.results);
             if (isReset.current) {
                 setMovies(response.results)
             } else {
                 setMovies(prev => [...prev, ...response.results])
             }
-            // setIsLoading(true)
-            // pageRef.current = response.page;
-            // if (!reset) setMovies(prev => [...prev, ...response.results])
-            // else setMovies(response.results)
-            // setItem('movies', response);
         } catch (error) {
             console.error(error)
         }
@@ -129,14 +128,124 @@ function AdvancedSearch() {
         getMoviesList();
     }, [])
 
+    const SelectBox = ({ optionArr, func, idType, suffix, value }) => {
+        return (
+            <select className="select select-bordered w-full max-w-xs" onChange={func} value={value}>
+                <option disabled value={''}></option>
+                {
+                    optionArr.map((item) => (
+                        <option key={`${item.id}-${idType}`} value={item.id}>
+                            {item.name} {suffix}
+                        </option>
+                    ))
+                }
+            </select>
+        )
+    }
+
+    const Filters = memo(() => {
+        console.log("RENDER");
+        return (
+            <>
+                <div className="collapse collapse-arrow bg-base-200">
+                    <input type="checkbox" />
+                    <div className="collapse-title text-xl font-medium">
+                        Click me to show/hide content
+                    </div>
+                    <div className="collapse-content">
+                        <p>hello</p>
+                        <input type="checkbox" defaultChecked className="checkbox" />
+                    </div>
+                </div>
+
+                {/* Genre */}
+                <div className="collapse collapse-arrow bg-gray-50 mb-2 collapse-open">
+                    <input type="checkbox" />
+                    <div className="collapse-title font-medium">
+                        Genre
+                    </div>
+                    <div className="collapse-content">
+                        <div className='flex flex-wrap gap-2'>
+                            {
+                                genre.map((item) => (
+                                    <div key={item.id} className='rounded-full border border-gray-600 px-3 py-1 flex items-center gap-4 cursor-pointer select-none text-gray-600'>
+                                        <span>{item.name}</span>
+                                        <input type="checkbox" value={item.id}
+                                            onChange={handleGenre}
+                                            className="checkbox checkbox-xs border-gray-600  [--chkfg:#e5e7eb]" />
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                {/* Rating */}
+                {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
+                    <input type="checkbox" />
+                    <div className="collapse-title font-medium">
+                        Rating
+                    </div>
+                    <div className="collapse-content">
+                        <div className='flex gap-2'>
+                            <SelectBox
+                                optionArr={starArr}
+                                func={handleStar1}
+                                idType={'star1'}
+                                suffix={'★'}
+                                value={star1Ref.current}
+                            />
+                            <SelectBox
+                                optionArr={starArr2}
+                                func={handleStar2}
+                                idType={'star2'}
+                                suffix={'★'}
+                                value={star2Ref.current}
+                            />
+                        </div>
+                    </div>
+                </div> */}
+
+                {/* Release Year */}
+                {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
+                    <input type="checkbox" />
+                    <div className="collapse-title font-medium">
+                        Release Year
+                    </div>
+                    <div className="collapse-content">
+                        <div className='flex gap-2'>
+                            <SelectBox
+                                optionArr={yearArr}
+                                func={handleYear1}
+                                idType={'year1'}
+                                suffix={''}
+                                value={year1Ref.current}
+                            />
+                            <SelectBox
+                                optionArr={yearArr2}
+                                func={handleYear2}
+                                idType={'year2'}
+                                suffix={''}
+                                value={year2Ref.current}
+                            />
+                        </div>
+                    </div>
+                </div> */}
+            </>
+        )
+    })
+
     return (
         <div className="" >
             <Header />
-            <div className='px-6 md:px-[4rem] font-bold underline pt-8 mb-4 cursor-pointer' onClick={() => navigate('/')}>Home</div>
-            <div className='grid grid-cols-[30%_70%] px-[3rem] mt-8'>
+            <div className='flex justify-between px-6 md:px-[4rem] pt-8 mb-4' >
+                <div className="font-bold underline cursor-pointer" onClick={() => navigate('/')}>Home</div>
+                {/* <img src="/assets/common/filter.png" alt="filter icon" className='sm:hidden w-[1.5rem] cursor-pointer' onClick={handleFilterClick} /> */}
+            </div>
+            <div className='grid grid-cols-[100%] sm:grid-cols-[30%_70%] px-2 sm:px-[3rem] mt-8'>
                 <div className='px-4'>
                     {/* Genre */}
-                    <div className="collapse collapse-arrow  bg-gray-50 mb-2">
+                    <div className="collapse collapse-arrow bg-gray-50 mb-2">
                         <input type="checkbox" />
                         <div className="collapse-title font-medium">
                             Genre
@@ -165,27 +274,20 @@ function AdvancedSearch() {
                         </div>
                         <div className="collapse-content">
                             <div className='flex gap-2'>
-                                <select className="select select-bordered w-full max-w-xs" onChange={handleStar1}>
-                                    <option disabled selected></option>
-                                    {
-                                        starArr.map((item) => (
-                                            <option key={`${item.id}-star1`} value={item.id}>
-                                                {item.name} ★
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-
-                                <select className="select select-bordered w-full max-w-xs" onChange={handleStar2}>
-                                    <option disabled selected></option>
-                                    {
-                                        starArr2.map((item) => (
-                                            <option key={`${item.id}-star2`} value={item.id} >
-                                                {item.id} ★
-                                            </option>
-                                        ))
-                                    }
-                                </select>
+                                <SelectBox
+                                    optionArr={starArr}
+                                    func={handleStar1}
+                                    idType={'star1'}
+                                    suffix={'★'}
+                                    value={star1Ref.current}
+                                />
+                                <SelectBox
+                                    optionArr={starArr2}
+                                    func={handleStar2}
+                                    idType={'star2'}
+                                    suffix={'★'}
+                                    value={star2Ref.current}
+                                />
                             </div>
                         </div>
                     </div>
@@ -198,42 +300,26 @@ function AdvancedSearch() {
                         </div>
                         <div className="collapse-content">
                             <div className='flex gap-2'>
-                                {/* <input type="text" min="4"
-                                    max="4" pattern="[4-9]*"
-                                    maxlength="4"
-                                    onChange={handleChange}
-                                    placeholder={`${new Date().getFullYear()}`}
-                                    className="input input-bordered w-full max-w-xs" />
-                                <input type="text" min="0"
-                                    max="4" pattern="[0-9]*" maxlength="4" placeholder={`${new Date().getFullYear()}`} className="input input-bordered w-full max-w-xs" /> */}
-
-                                <select className="select select-bordered w-full max-w-xs" onChange={handleYear1}>
-                                    <option disabled selected></option>
-                                    {
-                                        yearArr.map((item) => (
-                                            <option key={`${item.id}-year1`} value={item.id}>
-                                                {item.name}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
-
-                                <select className="select select-bordered w-full max-w-xs" onChange={handleYear2}>
-                                    <option disabled selected></option>
-                                    {
-                                        yearArr1.map((item) => (
-                                            <option key={`${item.id}-year2`} value={item.id}>
-                                                {item.id}
-                                            </option>
-                                        ))
-                                    }
-                                </select>
+                                <SelectBox
+                                    optionArr={yearArr}
+                                    func={handleYear1}
+                                    idType={'year1'}
+                                    suffix={''}
+                                    value={year1Ref.current}
+                                />
+                                <SelectBox
+                                    optionArr={yearArr2}
+                                    func={handleYear2}
+                                    idType={'year2'}
+                                    suffix={''}
+                                    value={year2Ref.current}
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='px-4' id="movie-container">
 
+                <div className='px-4' id="movie-container">
                     {
                         !isEmpty(movies) ? (
                             <div className='flex flex-wrap mx-auto justify-items-start'>
@@ -256,4 +342,100 @@ function AdvancedSearch() {
     )
 }
 
-export default AdvancedSearch
+export default AdvancedSearch;
+
+// const SelectBox = ({ optionArr, func, idType, suffix, value }) => {
+//     return (
+//         <select className="select select-bordered w-full max-w-xs" onChange={func} value={value}>
+//             <option disabled value={''}></option>
+//             {
+//                 optionArr.map((item) => (
+//                     <option key={`${item.id}-${idType}`} value={item.id}>
+//                         {item.name} {suffix}
+//                     </option>
+//                 ))
+//             }
+//         </select>
+//     )
+// }
+
+// const Filters = memo(({ genre, handleGenre, handleStar1, star1Ref }) => {
+//     console.log("RENDER");
+//     return (
+//         <>
+//             {/* Genre */}
+//             <div className="collapse collapse-arrow bg-gray-50 mb-2 collapse-open">
+//                 <input type="checkbox" />
+//                 <div className="collapse-title font-medium">
+//                     Genre
+//                 </div>
+//                 <div className="collapse-content">
+//                     <div className='flex flex-wrap gap-2'>
+//                         {
+//                             genre.map((item) => (
+//                                 <div key={item.id} className='rounded-full border border-gray-600 px-3 py-1 flex items-center gap-4 cursor-pointer select-none text-gray-600'>
+//                                     <span>{item.name}</span>
+//                                     <input type="checkbox" value={item.id}
+//                                         onChange={handleGenre}
+//                                         className="checkbox checkbox-xs border-gray-600  [--chkfg:#e5e7eb]" />
+//                                 </div>
+//                             ))
+//                         }
+//                     </div>
+//                 </div>
+//             </div>
+
+//             {/* Rating */}
+//             <div className="collapse collapse-arrow  bg-gray-50 mb-2">
+//                 <input type="checkbox" />
+//                 <div className="collapse-title font-medium">
+//                     Rating
+//                 </div>
+//                 <div className="collapse-content">
+//                     <div className='flex gap-2'>
+//                         <SelectBox
+//                             optionArr={starArr}
+//                             func={handleStar1}
+//                             idType={'star1'}
+//                             suffix={'★'}
+//                             value={star1Ref.current}
+//                         />
+//                         <SelectBox
+//                             optionArr={starArr2}
+//                             func={handleStar2}
+//                             idType={'star2'}
+//                             suffix={'★'}
+//                             value={star2Ref.current}
+//                         />
+//                     </div>
+//                 </div>
+//             </div>
+
+//             {/* Release Year */}
+//             {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
+//                 <input type="checkbox" />
+//                 <div className="collapse-title font-medium">
+//                     Release Year
+//                 </div>
+//                 <div className="collapse-content">
+//                     <div className='flex gap-2'>
+//                         <SelectBox
+//                             optionArr={yearArr}
+//                             func={handleYear1}
+//                             idType={'year1'}
+//                             suffix={''}
+//                             value={year1Ref.current}
+//                         />
+//                         <SelectBox
+//                             optionArr={yearArr2}
+//                             func={handleYear2}
+//                             idType={'year2'}
+//                             suffix={''}
+//                             value={year2Ref.current}
+//                         />
+//                     </div>
+//                 </div>
+//             </div> */}
+//         </>
+//     )
+// })
