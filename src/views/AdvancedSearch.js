@@ -245,7 +245,7 @@ function AdvancedSearch() {
     return (
         <div className="" >
             <Header />
-            <div className='flex justify-between px-6 md:px-[4rem] pt-8 mb-4' >
+            <div className='flex justify-between px-6 md:px-[4rem] pt-4 mb-4' >
                 <div className="font-bold underline cursor-pointer" onClick={() => navigate('/')}>Home</div>
                 {/* <img src="/assets/common/filter.png" alt="filter icon" className='sm:hidden w-[1.5rem] cursor-pointer' onClick={handleFilterClick} /> */}
             </div>

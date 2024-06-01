@@ -7,8 +7,7 @@ export default function Header() {
     useEffect(() => {
         const headerEl = document.getElementById("header");
         const handleScroll = () => {
-            if (window.scrollY >= 200) {
-                console.log("scroll:", window.scrollY);
+            if (window.scrollY >= 180) {
                 headerEl.style.backgroundColor = "#e4511a";
             } else {
                 headerEl.style.backgroundColor = null;
@@ -22,7 +21,7 @@ export default function Header() {
     }, []);
     return (
         <header className="h-[5rem]">
-            <div id="header" className='fixed shadow-xl z-[9999] duration-300 h-auto w-full grid grid-cols-[20%_80%] items-center text-white px-4 sm:px-12 bg-header-gradient py-2 navbar'>
+            <div id="header" className='fixed shadow-xl z-[9999] duration-300 h-auto w-full grid grid-cols-[20%_80%] items-center text-white px-4 sm:px-12 bg-[#00000080] py-2'>
                 <div>
                     <img src="/assets/common/logo1.png" loading="lazy" alt="Logo" onClick={() => navigate('/')} className="cursor-pointer w-[50px] sm:w-[70px]" />
                 </div>
