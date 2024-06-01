@@ -1,6 +1,17 @@
-# Getting Started with Create React App
+# Getting Started with Movie browser app
+1. Advanced Filtering: Users can apply a wide range of filters to find movies that match their preferences, including genre, release date, rating, and more.
+2. Watchlist Management: Users can easily add movies to their personal watchlist and remove them when desired, allowing for personalized movie tracking and organization.
+3. Real-Time Data: Fetches up-to-date movie information directly from the TMDB API, ensuring that users have access to the latest movie releases and trending films.
+4. The application will also display movie posters, ratings, and other relevant information,
+making it easy to find and discover new movies.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Application setup process
+This application is bulit on node 20.12.2 and npm 10.5.0
+1. Clone the repository using `git clone https://github.com/kundan667/movie_browser.git
+2. Navigate to the project directory using `cd movie_browser`
+3. Install the dependencies using `npm install`
+4. Start the application using `npm start`
+5. Open the application in your browser at `http://localhost:3000`
 
 ## Available Scripts
 
@@ -27,44 +38,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
