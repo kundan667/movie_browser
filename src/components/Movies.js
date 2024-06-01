@@ -17,6 +17,7 @@ function Movies() {
     const pageRef = useRef(1);
     const firstLoadSearchRef = useRef(true);
     const options = constants.API_OPTIONS;
+    const isEndReached = useRef(false);
 
     // debounced search
     const debouncedSearch = useCallback(debounce((q) => {
@@ -69,11 +70,14 @@ function Movies() {
             setIsLoading(true);
             const res = await fetch(`${url}${query}`, options);
             const response = await res.json();
-            setIsLoading(true)
+            setIsLoading(false)
             pageRef.current = response.page;
             if (!reset) setMovies(prev => [...prev, ...response.results])
             else setMovies(response.results)
             setItem('movies', response);
+            setTimeout(() => {
+                isEndReached.current = false;
+            }, 500);
         } catch (error) {
             console.error(error)
         }
@@ -88,9 +92,10 @@ function Movies() {
         const handleScroll = () => {
             let parentEl = document.getElementById("movie-container");
             let boundedRect = parentEl.getBoundingClientRect();
-
-            if (Math.round(Math.abs(boundedRect.top)) + window.innerHeight >= parentEl.scrollHeight) {
+            if (Math.round(Math.abs(boundedRect.top)) + window.innerHeight >= parentEl.scrollHeight - 50) {
+                if (isEndReached.current) return
                 pageRef.current++;
+                isEndReached.current = true;
                 if (!isEmpty(searchRef.current)) {
                     searchQueryRef.current = `?query=${searchRef.current}&page=${pageRef.current}`; // reset query param
                     getMoviesList(searchQueryRef.current, true)

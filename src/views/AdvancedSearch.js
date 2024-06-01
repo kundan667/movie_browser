@@ -18,6 +18,7 @@ function AdvancedSearch() {
     const [yearArr2, setYearArr2] = useState(yearArr);
     const [query, setQuery] = useState('');
     const [movies, setMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const star1Ref = useRef('');
     const star2Ref = useRef('');
     const year1Ref = useRef('');
@@ -25,7 +26,7 @@ function AdvancedSearch() {
     const genreRef = useRef([]);
     const pageRef = useRef(1);
     const isReset = useRef(false);
-    const [showFilter, setShowFilter] = useState(false);
+    const isEndReached = useRef(false);
 
     const handleQuery = () => {
         let rating1 = isEmpty(star1Ref.current) ? '' : `&vote_average.gte=${star1Ref.current}`;
@@ -94,14 +95,18 @@ function AdvancedSearch() {
 
     const getMoviesList = async () => {
         try {
-            // setIsLoading(true);
+            setIsLoading(true);
             const res = await fetch(`${constants.MOVIE_END_POINT}${query}`, options);
             const response = await res.json();
+            setIsLoading(false)
             if (isReset.current) {
                 setMovies(response.results)
             } else {
                 setMovies(prev => [...prev, ...response.results])
             }
+            setTimeout(() => {
+                isEndReached.current = false;
+            }, 500);
         } catch (error) {
             console.error(error)
         }
@@ -111,9 +116,11 @@ function AdvancedSearch() {
         const handleScroll = () => {
             let parentEl = document.getElementById("movie-container");
             let boundedRect = parentEl.getBoundingClientRect();
-
-            if (Math.round(Math.abs(boundedRect.top)) + window.innerHeight >= parentEl.scrollHeight) {
+            // return
+            if (Math.round(Math.abs(boundedRect.top)) + window.innerHeight >= (parentEl.scrollHeight - 50)) {
+                if (isEndReached.current) return
                 pageRef.current++;
+                isEndReached.current = true;
                 isReset.current = false;
                 handleQuery();
             }
@@ -337,6 +344,10 @@ function AdvancedSearch() {
                     }
 
                 </div>
+
+                {
+                    isLoading && (<div className='text-center py-4'>Loading...</div>)
+                }
             </div>
         </div>
     )
