@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import constants from "../data/constants";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -8,11 +9,10 @@ export default function Header() {
         const headerEl = document.getElementById("header");
         const handleScroll = () => {
             if (window.scrollY >= 180) {
-                headerEl.style.backgroundColor = "#e4511a";
+                headerEl.style.backgroundColor = constants.THEME_COLOR_PRIMARY;
             } else {
                 headerEl.style.backgroundColor = null;
             }
-
         };
         window.addEventListener("scroll", handleScroll);
         return () => {

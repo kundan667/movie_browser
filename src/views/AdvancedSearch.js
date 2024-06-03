@@ -34,7 +34,7 @@ function AdvancedSearch() {
         let ratingQ = rating1 + rating2;
         let genreQ = isEmpty(genreRef.current) ? '' : `&with_genres=${genreRef.current}`;
         let year1 = isEmpty(year1Ref.current) ? '' : `&primary_release_date.gte=${year1Ref.current}-01-01`;
-        let year2 = isEmpty(year2Ref.current) ? '' : `&primary_release_date.lte=${year2Ref.current}-01-01`;
+        let year2 = isEmpty(year2Ref.current) ? '' : `&primary_release_date.lte=${year2Ref.current}-12-31`;
         let yearQ = year1 + year2;
         let pageQ = isEmpty(pageRef.current) ? '' : `&page=${pageRef.current}`;
         let finalQ = `${ratingQ}${genreQ}${yearQ}${pageQ}`;
@@ -150,98 +150,6 @@ function AdvancedSearch() {
         )
     }
 
-    const Filters = memo(() => {
-        console.log("RENDER");
-        return (
-            <>
-                <div className="collapse collapse-arrow bg-base-200">
-                    <input type="checkbox" />
-                    <div className="collapse-title text-xl font-medium">
-                        Click me to show/hide content
-                    </div>
-                    <div className="collapse-content">
-                        <p>hello</p>
-                        <input type="checkbox" defaultChecked className="checkbox" />
-                    </div>
-                </div>
-
-                {/* Genre */}
-                <div className="collapse collapse-arrow bg-gray-50 mb-2 collapse-open">
-                    <input type="checkbox" />
-                    <div className="collapse-title font-medium">
-                        Genre
-                    </div>
-                    <div className="collapse-content">
-                        <div className='flex flex-wrap gap-2'>
-                            {
-                                genre.map((item) => (
-                                    <div key={item.id} className='rounded-full border border-gray-600 px-3 py-1 flex items-center gap-4 cursor-pointer select-none text-gray-600'>
-                                        <span>{item.name}</span>
-                                        <input type="checkbox" value={item.id}
-                                            onChange={handleGenre}
-                                            className="checkbox checkbox-xs border-gray-600  [--chkfg:#e5e7eb]" />
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                {/* Rating */}
-                {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
-                    <input type="checkbox" />
-                    <div className="collapse-title font-medium">
-                        Rating
-                    </div>
-                    <div className="collapse-content">
-                        <div className='flex gap-2'>
-                            <SelectBox
-                                optionArr={starArr}
-                                func={handleStar1}
-                                idType={'star1'}
-                                suffix={'★'}
-                                value={star1Ref.current}
-                            />
-                            <SelectBox
-                                optionArr={starArr2}
-                                func={handleStar2}
-                                idType={'star2'}
-                                suffix={'★'}
-                                value={star2Ref.current}
-                            />
-                        </div>
-                    </div>
-                </div> */}
-
-                {/* Release Year */}
-                {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
-                    <input type="checkbox" />
-                    <div className="collapse-title font-medium">
-                        Release Year
-                    </div>
-                    <div className="collapse-content">
-                        <div className='flex gap-2'>
-                            <SelectBox
-                                optionArr={yearArr}
-                                func={handleYear1}
-                                idType={'year1'}
-                                suffix={''}
-                                value={year1Ref.current}
-                            />
-                            <SelectBox
-                                optionArr={yearArr2}
-                                func={handleYear2}
-                                idType={'year2'}
-                                suffix={''}
-                                value={year2Ref.current}
-                            />
-                        </div>
-                    </div>
-                </div> */}
-            </>
-        )
-    })
-
     return (
         <div className="" >
             <Header />
@@ -344,7 +252,6 @@ function AdvancedSearch() {
                     }
 
                 </div>
-
                 {
                     isLoading && (<div className='text-center py-4'>Loading...</div>)
                 }
@@ -354,99 +261,3 @@ function AdvancedSearch() {
 }
 
 export default AdvancedSearch;
-
-// const SelectBox = ({ optionArr, func, idType, suffix, value }) => {
-//     return (
-//         <select className="select select-bordered w-full max-w-xs" onChange={func} value={value}>
-//             <option disabled value={''}></option>
-//             {
-//                 optionArr.map((item) => (
-//                     <option key={`${item.id}-${idType}`} value={item.id}>
-//                         {item.name} {suffix}
-//                     </option>
-//                 ))
-//             }
-//         </select>
-//     )
-// }
-
-// const Filters = memo(({ genre, handleGenre, handleStar1, star1Ref }) => {
-//     console.log("RENDER");
-//     return (
-//         <>
-//             {/* Genre */}
-//             <div className="collapse collapse-arrow bg-gray-50 mb-2 collapse-open">
-//                 <input type="checkbox" />
-//                 <div className="collapse-title font-medium">
-//                     Genre
-//                 </div>
-//                 <div className="collapse-content">
-//                     <div className='flex flex-wrap gap-2'>
-//                         {
-//                             genre.map((item) => (
-//                                 <div key={item.id} className='rounded-full border border-gray-600 px-3 py-1 flex items-center gap-4 cursor-pointer select-none text-gray-600'>
-//                                     <span>{item.name}</span>
-//                                     <input type="checkbox" value={item.id}
-//                                         onChange={handleGenre}
-//                                         className="checkbox checkbox-xs border-gray-600  [--chkfg:#e5e7eb]" />
-//                                 </div>
-//                             ))
-//                         }
-//                     </div>
-//                 </div>
-//             </div>
-
-//             {/* Rating */}
-//             <div className="collapse collapse-arrow  bg-gray-50 mb-2">
-//                 <input type="checkbox" />
-//                 <div className="collapse-title font-medium">
-//                     Rating
-//                 </div>
-//                 <div className="collapse-content">
-//                     <div className='flex gap-2'>
-//                         <SelectBox
-//                             optionArr={starArr}
-//                             func={handleStar1}
-//                             idType={'star1'}
-//                             suffix={'★'}
-//                             value={star1Ref.current}
-//                         />
-//                         <SelectBox
-//                             optionArr={starArr2}
-//                             func={handleStar2}
-//                             idType={'star2'}
-//                             suffix={'★'}
-//                             value={star2Ref.current}
-//                         />
-//                     </div>
-//                 </div>
-//             </div>
-
-//             {/* Release Year */}
-//             {/* <div className="collapse collapse-arrow  bg-gray-50 mb-2">
-//                 <input type="checkbox" />
-//                 <div className="collapse-title font-medium">
-//                     Release Year
-//                 </div>
-//                 <div className="collapse-content">
-//                     <div className='flex gap-2'>
-//                         <SelectBox
-//                             optionArr={yearArr}
-//                             func={handleYear1}
-//                             idType={'year1'}
-//                             suffix={''}
-//                             value={year1Ref.current}
-//                         />
-//                         <SelectBox
-//                             optionArr={yearArr2}
-//                             func={handleYear2}
-//                             idType={'year2'}
-//                             suffix={''}
-//                             value={year2Ref.current}
-//                         />
-//                     </div>
-//                 </div>
-//             </div> */}
-//         </>
-//     )
-// })
