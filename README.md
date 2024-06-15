@@ -11,7 +11,7 @@ This application is bulit on node 20.12.2 and npm 10.5.0
 2. Navigate to the project directory using `cd movie_browser`
 3. Install the dependencies using `npm install`
 4. Start the application using `npm start`
-5. Open the application in your browser at `http://localhost:3000`
+5. Open the application in your browser at `http://localhost:3000` || https://movie-browser-vert.vercel.app/
 
 ## Available Scripts
 
