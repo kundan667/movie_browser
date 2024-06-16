@@ -1,7 +1,7 @@
 # Getting Started with Movie browser app
 1. Advanced Filtering: Users can apply a wide range of filters to find movies that match their preferences, including genre, release date, rating, and more.
 2. Watchlist Management: Users can easily add movies to their personal watchlist and remove them when desired, allowing for personalized movie tracking and organization.
-3. Real-Time Data: Fetches up-to-date movie information directly from the TMDB API, ensuring that users have access to the latest movie releases and trending films.
+3. Real-Time Data: Fetches up-to-date movie information directly from the 'TMD' API, ensuring that users have access to the latest movie releases and trending films.
 4. The application will also display movie posters, ratings, and other relevant information,
 making it easy to find and discover new movies.
 
