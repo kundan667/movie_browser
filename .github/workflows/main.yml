@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run a sample github actions
-      - run: this git hib actions runs successfully
+        run: this git hib actions runs successfully
