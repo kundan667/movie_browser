@@ -8,5 +8,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
       - name: Run a sample github actions
-        run: this git hib actions runs successfully
+        run: echo "runs successfully"
