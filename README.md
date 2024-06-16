@@ -7,7 +7,7 @@ making it easy to find and discover new movies.
 
 
 ## Application setup process
-This application is bulit on node 20.12.2 and npm 10.5.0
+This application is built on node 20.12.2 and npm 10.5.0
 1. Clone the repository using `git clone https://github.com/kundan667/movie_browser.git
 2. Navigate to the project directory using `cd movie_browser `
 3. Install the dependencies using `npm install`
