@@ -12,6 +12,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: setup nodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Specify the Node.js version you need
+          
+      - name: install dependencies
+        run: npm install
+
+      - name: build project
+        run: npm run build
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
