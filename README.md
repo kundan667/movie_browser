@@ -5,6 +5,7 @@
 4. The application will also display movie posters, ratings, and other relevant information,
 making it easy to find and discover new movies.
 
+
 ## Application setup process
 This application is bulit on node 20.12.2 and npm 10.5.0
 1. Clone the repository using `git clone https://github.com/kundan667/movie_browser.git
