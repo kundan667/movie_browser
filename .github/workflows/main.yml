@@ -32,4 +32,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy static site to s3 bucket
-        run: aws s3 sync . s3://movie-browser-2024 --delete
+        run: aws s3 sync ./build s3://movie-browser-2024 --delete
