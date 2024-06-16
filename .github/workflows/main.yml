@@ -15,17 +15,10 @@ jobs:
       - name: setup nodeJs
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Specify the Node.js version you need
+          node-version: '20' # Specify the Node.js
           
       - name: install dependencies
         run: npm install
-        
-      - name: Debug environment
-        run: |
-          node -v
-          npm -v
-          ls -la
-          printenv
 
       - name: build project
         run: npm run build
@@ -38,5 +31,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      - name: Delpoy static site to s3 bucket
+      - name: Deploy static site to s3 bucket
         run: aws s3 sync . s3://movie-browser-2024 --delete
