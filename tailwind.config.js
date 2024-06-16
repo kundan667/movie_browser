@@ -1,6 +1,7 @@
 const { default: constants } = require('./src/data/constants');
 
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
