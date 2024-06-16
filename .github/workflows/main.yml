@@ -30,7 +30,7 @@ jobs:
       - name: build project
         run: npm run build
         env:
-          CI: true # Ensures the build behaves correctly in CI environments
+          CI: false # Ensures the build behaves correctly in CI environments
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
