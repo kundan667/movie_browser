@@ -19,9 +19,18 @@ jobs:
           
       - name: install dependencies
         run: npm install
+        
+      - name: Debug environment
+        run: |
+          node -v
+          npm -v
+          ls -la
+          printenv
 
       - name: build project
         run: npm run build
+        env:
+          CI: true # Ensures the build behaves correctly in CI environments
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
