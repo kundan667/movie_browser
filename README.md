@@ -18,6 +18,7 @@ This application is built on node 20.12.2 and npm 10.5.0
 
 In the project directory, you can run:
 
+
 ### `npm start`
 
 Runs the app in the development mode.\
